@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import {Grid, makeStyles} from '@material-ui/core';
 import Sidebar from './components/Sidebar';
-import { Route } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import ShowsContainer from './components/Shows/ShowsContainer';
 import withSuspense from './hocs/withSuspense';
 let ArtistProfileContainer = React.lazy(() => import('./components/ArtistProfile/ArtistProfileContainer'));
@@ -22,9 +22,12 @@ function App(props) {
             <Sidebar/>
         </Grid>
         <Grid item xs={10}>
-          <Route path="/show-profile/:showId?" render={withSuspense(ShowProfileContainer)}/>
-          <Route path="/shows" render={() => <ShowsContainer/>}/>
-          <Route path="/artist-profile/:artistId?" render={withSuspense(ArtistProfileContainer)}/>
+          <Switch>
+            <Route exact path="/" render={() => <Redirect to="/shows"/>}/>
+            <Route path="/show-profile/:showId?" render={withSuspense(ShowProfileContainer)}/>
+            <Route path="/shows" render={() => <ShowsContainer/>}/>
+            <Route path="/artist-profile/:artistId?" render={withSuspense(ArtistProfileContainer)}/>
+          </Switch>
         </Grid>
       </Grid>
   );
